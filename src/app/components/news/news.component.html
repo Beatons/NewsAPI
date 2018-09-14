@@ -2,19 +2,58 @@
   <div class="row push-top">
 
     <div class="col-4 form-group">
-      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Search">
+      <input [(ngModel)]="searchInput" (keyup.enter)="getNews()" (blur)="getNews()" type="email" class="form-control" id="exampleInputEmail1" placeholder="Search">
     </div>
     <div *ngIf="sources | async as list" class="col-4 form-group">
-      <select class="form-control" id="sourceInput">
+      <select multiple [(ngModel)]="sourcesInput" (change)="getNews()" class="form-control" id="sourceInput">
         <option *ngFor="let source of list.sources">
           {{ source.name }}
         </option>
       </select>
     </div>
-    <div>
+    <div class="col"></div>
+    <div class="col-2">
       <button type="button" class="btn btn-primary" (click)="saveAsNew()">
         Save as New
       </button>
     </div>
+  </div>
+  
+  <div *ngIf="feed | async as list">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col-6">News</th>
+        <th scope="col">Published at</th>
+        <th scope="col">Popularity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of list.articles; let i = index">
+        <td>
+          {{ item.title }} 
+        </td>
+        <td>
+          {{ item.publishedAt | date }}
+        </td>
+        <td>
+          {{ (1 + i) }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+      <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li [ngClass]="{'disabled':!((currentPage - 1) > 0)}" class="page-item">
+              <a class="page-link" (click)="changePage('back')">
+                Previous
+              </a>
+            </li>
+            <li *ngIf="(currentPage - 1) > 0" class="page-item"><a class="page-link" (click)="changePage('back')">{{ (currentPage - 1) }}</a></li>
+            <li class="page-item disabled"><a class="page-link">{{ currentPage }}</a></li>
+            <li class="page-item"><a class="page-link" (click)="changePage('next')">{{ currentPage + 1 }}</a></li>
+            <li class="page-item"><a class="page-link" (click)="changePage('next')">Next</a></li>
+          </ul>
+        </nav>
   </div>
 </div>
