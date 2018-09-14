@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { NewsApiService } from "../../services/news-api.service";
 import { FeedStoreService } from "../../services/feed-store.service";
 import { Observable } from "rxjs";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector:'gg-news',
@@ -19,7 +20,8 @@ export class GGNewsComponent {
   pageSize = 5;
   constructor(
     private newsApi:NewsApiService,
-    // private feedStore: FeedStoreService
+    private feedStore: FeedStoreService,
+    private modalService: NgbModal
     ) {}
     ngOnInit():void {
       this.getSources();
@@ -40,9 +42,19 @@ export class GGNewsComponent {
     private getSources():void {
       this.sources = this.newsApi.getSources();
     }
-    saveAsNew() {
-
+    saveAsNew(content) {
+      this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+       console.log(result);
+       this.feedStore.create({
+         name:result,
+         filters:{
+           q:this.searchInput,
+           sources:this.sourcesInput
+         }
+       });
+      });
     }
+ 
     changePage(direction:string) {
       if(direction === 'back') {
         this.currentPage--;

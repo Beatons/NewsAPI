@@ -12,6 +12,20 @@ import { AppComponent } from './app.component';
 import { GGNavigationModule } from './components/navigation/navigation.module';
 import { GGNewsModule } from './components/news/news.module';
 import { HttpClientModule } from '@angular/common/http';
+import { RouterModule, Routes } from '@angular/router';
+import { GGNewsComponent } from './components/news/news.component';
+
+const routes:Routes = [
+  {
+    path: '',
+    component: GGNewsComponent
+  },
+  {
+    path: ':id',
+    component: GGNewsComponent
+  }
+];
+
 
 @NgModule({
   declarations: [
@@ -24,6 +38,7 @@ import { HttpClientModule } from '@angular/common/http';
     NgbModule,
     GGNewsModule,
     HttpClientModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]

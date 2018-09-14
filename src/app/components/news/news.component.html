@@ -1,3 +1,23 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+      <input #nameInput (keyup.enter)="modal.close(nameInput.value)" type="text" class="form-control" placeholder="Filter name">
+          
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close(nameInput.value)">Save</button>
+    </div>
+  </ng-template>
+  
 <div class="container">
   <div class="row push-top">
 
@@ -13,7 +33,8 @@
     </div>
     <div class="col"></div>
     <div class="col-2">
-      <button type="button" class="btn btn-primary" (click)="saveAsNew()">
+      
+      <button type="button" class="btn btn-primary" (click)="saveAsNew(content)">
         Save as New
       </button>
     </div>
