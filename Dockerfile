@@ -1,0 +1,3 @@
+FROM mhart/alpine-node:8
+
+EXPOSE 4200 49153 9876 9000

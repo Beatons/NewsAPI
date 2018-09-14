@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row push-top">
+
+    <div class="col-4 form-group">
+      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Search">
+    </div>
+    <div *ngIf="sources | async as list" class="col-4 form-group">
+      <select class="form-control" id="sourceInput">
+        <option *ngFor="let source of list.sources">
+          {{ source.name }}
+        </option>
+      </select>
+    </div>
+    <div>
+      <button type="button" class="btn btn-primary" (click)="saveAsNew()">
+        Save as New
+      </button>
+    </div>
+  </div>
+</div>
