@@ -18,12 +18,18 @@ import { FeedStoreService } from './services/feed-store.service';
 
 const routes:Routes = [
   {
-    path: '',
+    path: 'home',
     component: GGNewsComponent
   },
   {
     path: ':id',
     component: GGNewsComponent
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    redirectTo: "/home",
+
   }
 ];
 

@@ -4,6 +4,7 @@ import { FeedStoreService } from "../../services/feed-store.service";
 import { Observable } from "rxjs";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from "@angular/router";
+import { faSortDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector:'gg-news',
@@ -12,7 +13,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 })
 
 export class GGNewsComponent {
-  
+  faSortDown = faSortDown;
   sources: Observable<NewsAPI.SourceResult>;
   feed: Observable<NewsAPI.NewsResult>;
   searchInput = '';
@@ -20,6 +21,7 @@ export class GGNewsComponent {
   currentPage = 1;
   pageSize = 5;
   filterId:string;
+  sort: "popularity"|"relevancy"|"publishedAt" = "popularity";
   constructor(
     private newsApi:NewsApiService,
     private feedStore: FeedStoreService,
@@ -28,14 +30,18 @@ export class GGNewsComponent {
     private router:Router
     ) {}
     ngOnInit():void {
-     const sub1 = this.route.paramMap.subscribe((route)=> {
+     this.route.paramMap.subscribe((route)=> {
       this.filterId = route.get('id');
-      const sub2 = this.feedStore.get(this.filterId).subscribe((filter) => {
+      if(this.filterId) {
+        this.feedStore.get(this.filterId).subscribe((filter) => {
           this.searchInput = filter.filters.q;
           this.sourcesInput = filter.filters.sources;
-          sub2.unsubscribe();
-          sub1.unsubscribe();
+          this.getNews();
         });
+      } else {
+        this.getNews();
+      }
+
       })
       this.getSources();
     }
@@ -46,7 +52,7 @@ export class GGNewsComponent {
         this.feed = this.newsApi.getNews({
           page:this.currentPage,
           pageSize: this.pageSize,
-          sortBy: "popularity",
+          sortBy: this.sort,
           q:this.searchInput,
           sources:this.sourcesInput
         });
@@ -66,7 +72,10 @@ export class GGNewsComponent {
         }
       });
     }
- 
+    sortBy(by:"popularity"|"relevancy"|"publishedAt") {
+      this.sort = by;
+      this.getNews();
+    }
     changePage(direction:string) {
       if(direction === 'back') {
         this.currentPage--;
@@ -84,7 +93,7 @@ export class GGNewsComponent {
           q:this.searchInput,
           sources:this.sourcesInput
          }
-       }).subscribe().unsubscribe();
+       }).subscribe();
     }
     reset() {
       this.searchInput = '';
@@ -99,11 +108,11 @@ export class GGNewsComponent {
             q:this.searchInput,
             sources:this.sourcesInput
           }
-        }).subscribe().unsubscribe();
+        }).subscribe();
     }
     delete() {
       this.feedStore.remove(this.filterId).subscribe(() => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/home']);
       })
     }
 }

@@ -50,12 +50,18 @@
   </div>
   
   <div *ngIf="feed | async as list">
-  <table class="table">
+  <table class="table push-top">
     <thead>
       <tr>
         <th scope="col-6">News</th>
-        <th scope="col">Published at</th>
-        <th scope="col">Popularity</th>
+        <th (click)="sortBy('publishedAt')" class="pointer" scope="col">
+            <fa-icon *ngIf="sort === 'publishedAt'" [icon]="faSortDown"></fa-icon> 
+          Published at
+        </th>
+        <th (click)="sortBy('popularity')" class="pointer" scope="col">
+            <fa-icon *ngIf="sort === 'popularity'" [icon]="faSortDown"></fa-icon> 
+          Popularity
+        </th>
       </tr>
     </thead>
     <tbody>
