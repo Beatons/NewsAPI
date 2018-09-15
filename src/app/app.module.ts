@@ -9,11 +9,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 //components
 import { AppComponent } from './app.component';
 //modules
-import { GGNavigationModule } from './components/navigation/navigation.module';
 import { GGNewsModule } from './components/news/news.module';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { GGNewsComponent } from './components/news/news.component';
+import { GGNavigationComponent } from './components/navigation/navigation.component';
+import { FeedStoreService } from './services/feed-store.service';
 
 const routes:Routes = [
   {
@@ -30,9 +31,9 @@ const routes:Routes = [
 @NgModule({
   declarations: [
     AppComponent,
+    GGNavigationComponent
   ],
   imports: [
-    GGNavigationModule,
     BrowserModule,
     FontAwesomeModule,
     NgbModule,
@@ -40,7 +41,9 @@ const routes:Routes = [
     HttpClientModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [],
+  providers: [
+    FeedStoreService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

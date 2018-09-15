@@ -34,8 +34,17 @@
     <div class="col"></div>
     <div class="col-2">
       
-      <button type="button" class="btn btn-primary" (click)="saveAsNew(content)">
+      <button *ngIf="!filterId" type="button" [disabled]="sourcesInput.length === 0" [ngClass]="{'disabled': sourcesInput.length === 0}" class="btn btn-primary block full" (click)="saveAsNew('create',content)">
         Save as New
+      </button>
+      <button *ngIf="filterId" type="button" [disabled]="sourcesInput.length === 0" [ngClass]="{'disabled':sourcesInput.length === 0}" class="btn btn-primary block full" (click)="saveAsNew('update',content)">
+          Save
+      </button>
+      <button *ngIf="filterId" type="button" class="btn btn-primary block push-top full" (click)="reset()">
+        Reset
+      </button>
+      <button *ngIf="filterId" type="button" class="btn btn-primary block push-top full" (click)="delete()">
+        Delete
       </button>
     </div>
   </div>
@@ -57,13 +66,13 @@
         <td>
           {{ item.publishedAt | date }}
         </td>
-        <td>
-          {{ (1 + i) }}
-        </td>
+      </tr>
+      <tr *ngIf="list.articles.length === 0">
+        No items matching the applied filter.
       </tr>
     </tbody>
   </table>
-      <nav aria-label="Page navigation example">
+      <nav *ngIf="list.articles.length >= pageSize" aria-label="Page navigation example">
           <ul class="pagination">
             <li [ngClass]="{'disabled':!((currentPage - 1) > 0)}" class="page-item">
               <a class="page-link" (click)="changePage('back')">
